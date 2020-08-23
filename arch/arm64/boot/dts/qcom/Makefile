@@ -205,8 +205,6 @@ sxr1130-usbc-external-codec-mtp-overlay.dtbo-base := sxr1130.dtb
 sxr1130-usbc-external-codec-pm660a-mtp-overlay.dtbo-base := sxr1130.dtb
 sxr1130-usbc-mtp-overlay.dtbo-base := sxr1130.dtb
 sxr1130-usbc-pm660a-mtp-overlay.dtbo-base := sxr1130.dtb
-sirius-sdm710-overlay.dtbo-base := sdm710.dtb
-sirius-sdm670-overlay.dtbo-base := sdm670.dtb
 pyxis-sdm710-overlay.dtbo-base := sdm710.dtb
 
 else
