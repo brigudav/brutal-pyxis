@@ -363,7 +363,6 @@ static ssize_t mipi_dsi_device_transfer(struct mipi_dsi_device *dsi,
 		msg->flags |= MIPI_DSI_MSG_USE_LPM;
 	msg->flags |= MIPI_DSI_MSG_LASTCOMMAND;
 
-	msg->flags |= MIPI_DSI_MSG_LASTCOMMAND;
 	return ops->transfer(dsi->host, msg);
 }
 
@@ -658,7 +657,7 @@ ssize_t mipi_dsi_dcs_write_buffer(struct mipi_dsi_device *dsi,
 	struct mipi_dsi_msg msg = {
 		.channel = dsi->channel,
 		.tx_buf = data,
-		.tx_len = len,
+		.tx_len = len
 	};
 
 	switch (len) {

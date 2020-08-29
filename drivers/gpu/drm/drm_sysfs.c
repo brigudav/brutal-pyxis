@@ -217,7 +217,7 @@ static ssize_t modes_show(struct device *device,
 
 extern int drm_get_panel_info(struct drm_bridge *bridge, char *name);
 static ssize_t panel_info_show(struct device *device,
-			    struct device_attribute *attr,
+			   struct device_attribute *attr,
 			   char *buf)
 {
 	int written = 0;
@@ -273,7 +273,6 @@ static ssize_t disp_param_store(struct device *device,
 	if (!bridge)
 		return count;
 	sscanf(buf, "0x%x", &param);
-
 	drm_bridge_disp_param_set(bridge, param);
 
 	return count;
@@ -285,7 +284,7 @@ ssize_t dsi_bridge_disp_get_doze_backlight(struct drm_connector *connector,
 			char *buf);
 
 static ssize_t doze_brightness_show(struct device *device,
-			    struct device_attribute *attr,
+			   struct device_attribute *attr,
 			   char *buf)
 {
 	int writen = 0;
@@ -320,12 +319,11 @@ static ssize_t doze_backlight_store(struct device *device,
 		return ret;
 
 	ret = dsi_bridge_disp_set_doze_backlight(connector, doze_backlight);
-
 	return ret ? ret : count;
 }
 
 static ssize_t doze_backlight_show(struct device *dev,
-		struct device_attribute *attr, char *buf)
+			   struct device_attribute *attr, char *buf)
 {
 	struct drm_connector *connector = to_drm_connector(dev);
 	return dsi_bridge_disp_get_doze_backlight(connector, buf);
@@ -397,12 +395,10 @@ static ssize_t disp_count_show(struct device *device,
 		return ret;
 
 	ret = drm_bridge_disp_count_get(bridge, buf);
-
 	return ret;
 }
 
 extern bool get_fod_ui_status(struct drm_connector *connector);
-
 static ssize_t fod_ui_ready_show(struct device *device,
 			   struct device_attribute *attr,
 			   char *buf)
@@ -423,23 +419,19 @@ ssize_t xm_fod_dim_layer_alpha_store(struct device *dev,
 		const char *buf, size_t count);
 
 extern bool set_fod_dimlayer_status(struct drm_connector *connector, bool enable);
-
 static ssize_t dim_layer_enable_store(struct device *dev,
-		struct device_attribute *attr,
-		const char *buf, size_t count)
+			   struct device_attribute *attr,
+			   const char *buf, size_t count)
 {
 	struct drm_connector *connector = NULL;
 	bool fod_dimlayer_status = true;
 	ssize_t ret = 0;
 
 	connector = to_drm_connector(dev);
-
 	if (!connector)
 		return ret;
 
 	ret = kstrtobool(buf, &fod_dimlayer_status);
-	ret = set_fod_dimlayer_status(connector, fod_dimlayer_status);
-
 	if (!set_fod_dimlayer_status(connector, fod_dimlayer_status))
 		return ret;
 
@@ -448,10 +440,9 @@ static ssize_t dim_layer_enable_store(struct device *dev,
 }
 
 extern bool get_fod_dimlayer_status(struct drm_connector *connector);
-
 static ssize_t dim_layer_enable_show(struct device *device,
-				struct device_attribute *attr,
-				char *buf)
+			   struct device_attribute *attr,
+			   char *buf)
 {
 	struct drm_connector *connector = NULL;
 	bool fod_dimlayer_status = true;
@@ -461,15 +452,13 @@ static ssize_t dim_layer_enable_show(struct device *device,
 		return 0;
 
 	fod_dimlayer_status = get_fod_dimlayer_status(connector);
-
 	return snprintf(buf, PAGE_SIZE, fod_dimlayer_status ? "enabled\n" : "disabled\n");
 }
 
 extern bool get_fod_dimlayer_hbm_enabled_status(struct drm_connector *connector);
-
 static ssize_t dimlayer_hbm_enabled_show(struct device *device,
-				struct device_attribute *attr,
-				char *buf)
+			   struct device_attribute *attr,
+			   char *buf)
 {
 	struct drm_connector *connector = NULL;
 	bool fod_dimlayer_hbm_enabled_status = false;
@@ -479,7 +468,6 @@ static ssize_t dimlayer_hbm_enabled_show(struct device *device,
 		return 0;
 
 	fod_dimlayer_hbm_enabled_status = get_fod_dimlayer_hbm_enabled_status(connector);
-
 	return snprintf(buf, PAGE_SIZE, "%d\n", fod_dimlayer_hbm_enabled_status);
 }
 
@@ -495,7 +483,7 @@ static ssize_t hbm_status_show(struct device *device,
 
 static DEVICE_ATTR_RW(dim_layer_enable);
 static DEVICE_ATTR_RO(dimlayer_hbm_enabled);
-static DEVICE_ATTR(dim_alpha, S_IRUGO|S_IWUSR, NULL, xm_fod_dim_layer_alpha_store);
+static DEVICE_ATTR(dim_alpha, S_IRUGO | S_IWUSR, NULL, xm_fod_dim_layer_alpha_store);
 static DEVICE_ATTR_RW(status);
 static DEVICE_ATTR_RO(enabled);
 static DEVICE_ATTR_RO(dpms);

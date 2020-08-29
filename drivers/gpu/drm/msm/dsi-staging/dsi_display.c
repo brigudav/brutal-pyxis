@@ -68,7 +68,6 @@ struct dsi_display *get_primary_display(void)
 {
 	return dim_display;
 }
-
 EXPORT_SYMBOL(get_primary_display);
 
 static struct dsi_display *primary_display;
@@ -190,7 +189,7 @@ int dsi_display_set_backlight(void *display, u32 bl_lvl)
 	if (bl_temp != 0 && bl_temp < backlight_min)
 		bl_temp = backlight_min;
 
-	pr_info("bl_scale = %u, bl_scale_ad = %u, bl_lvl = %u\n",
+	pr_debug("bl_scale = %u, bl_scale_ad = %u, bl_lvl = %u\n",
 		bl_scale, bl_scale_ad, (u32)bl_temp);
 
 	rc = dsi_display_clk_ctrl(dsi_display->dsi_clk_handle,
@@ -1188,6 +1187,7 @@ int dsi_display_set_power(struct drm_connector *connector,
 	struct drm_notify_data g_notify_data;
 	int rc = 0;
 	int event = 0;
+
 	if (!display || !display->panel) {
 		pr_err("invalid display/panel\n");
 		return -EINVAL;
@@ -5912,8 +5912,8 @@ int dsi_display_get_modes(struct dsi_display *display,
 
 exit:
 	*out_modes = display->modes;
-	rc = 0;
 	dim_display = display;
+	rc = 0;
 
 error:
 	if (rc)
@@ -6882,7 +6882,6 @@ int dsi_display_enable(struct dsi_display *display)
 		}
 
 		dsi_panel_acquire_panel_lock(display->panel);
-
 		display->panel->panel_initialized = true;
 		pr_debug("cont splash enabled, display enable not required\n");
 

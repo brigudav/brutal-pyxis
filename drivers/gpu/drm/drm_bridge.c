@@ -340,6 +340,7 @@ void drm_bridge_disp_param_set(struct drm_bridge *bridge, int cmd)
 int drm_get_panel_info(struct drm_bridge *bridge, char *buf)
 {
 	int rc = 0;
+
 	if (!bridge)
 		return rc;
 

@@ -726,14 +726,20 @@ int sde_connector_update_hbm(struct sde_connector *c_conn)
 				(dsi_display->drm_dev && dsi_display->drm_dev->state == DRM_BLANK_LP2)) {
 				if (dsi_display->panel->last_bl_lvl > dsi_display->panel->doze_backlight_threshold) {
 					dsi_display->panel->fod_dimlayer_hbm_enabled = false;
-					pr_info("set fod_dimlayer_hbm_enabled state at hbm fod off doze hbm on is [%d]", dsi_display->panel->fod_dimlayer_hbm_enabled);
-					dsi_display_write_panel(dsi_display, &dsi_display->panel->cur_mode->priv_info->cmd_sets[DSI_CMD_SET_DISP_HBM_FOD_OFF_DOZE_HBM_ON]);
+					pr_info("set fod_dimlayer_hbm_enabled state at hbm fod off doze hbm on is [%d]",
+								dsi_display->panel->fod_dimlayer_hbm_enabled);
+					dsi_display_write_panel(dsi_display,
+						&dsi_display->panel->cur_mode->priv_info->cmd_sets[
+							DSI_CMD_SET_DISP_HBM_FOD_OFF_DOZE_HBM_ON]);
 					dsi_display->drm_dev->doze_brightness = DOZE_BRIGHTNESS_HBM;
 				} else if (dsi_display->panel->last_bl_lvl < dsi_display->panel->doze_backlight_threshold
 							&& dsi_display->panel->last_bl_lvl > 0) {
 					dsi_display->panel->fod_dimlayer_hbm_enabled = false;
-					pr_info("set fod_dimlayer_hbm_enabled state at hbm fod off doze lbm on is [%d]", dsi_display->panel->fod_dimlayer_hbm_enabled);
-					dsi_display_write_panel(dsi_display, &dsi_display->panel->cur_mode->priv_info->cmd_sets[DSI_CMD_SET_DISP_HBM_FOD_OFF_DOZE_LBM_ON]);
+					pr_info("set fod_dimlayer_hbm_enabled state at hbm fod off doze lbm on is [%d]",
+								dsi_display->panel->fod_dimlayer_hbm_enabled);
+					dsi_display_write_panel(dsi_display,
+						&dsi_display->panel->cur_mode->priv_info->cmd_sets[
+							DSI_CMD_SET_DISP_HBM_FOD_OFF_DOZE_LBM_ON]);
 					dsi_display->drm_dev->doze_brightness = DOZE_BRIGHTNESS_LBM;
 				}
 				dsi_display->panel->in_aod = true;
@@ -742,7 +748,9 @@ int sde_connector_update_hbm(struct sde_connector *c_conn)
 				dsi_display->panel->fod_dimlayer_hbm_enabled = false;
 				pr_info("set fod_dimlayer_hbm_enabled state_1 is [%d]", dsi_display->panel->fod_dimlayer_hbm_enabled);
 				SDE_ATRACE_BEGIN("set_hbm_off");
-				rc = dsi_display_write_panel(dsi_display, &dsi_display->panel->cur_mode->priv_info->cmd_sets[DSI_CMD_SET_DISP_HBM_FOD_OFF]);
+				rc = dsi_display_write_panel(dsi_display,
+					&dsi_display->panel->cur_mode->priv_info->cmd_sets[
+								DSI_CMD_SET_DISP_HBM_FOD_OFF]);
 				dsi_display->panel->skip_dimmingon = STATE_DIM_RESTORE;
 				pr_info("HBM fod off\n");
 				sysfs_notify(&dsi_display->drm_conn->kdev->kobj, NULL, "dimlayer_hbm_enabled");
@@ -750,7 +758,8 @@ int sde_connector_update_hbm(struct sde_connector *c_conn)
 				SDE_ATRACE_END("set_hbm_off");
 				if (dsi_display->panel->dim_layer_replace_dc) {
 					SDE_ATRACE_BEGIN("restore_crc");
-					dsi_panel_set_backlight(dsi_display->panel, c_conn->bl_device->props.brightness);
+					dsi_panel_set_backlight(dsi_display->panel,
+							c_conn->bl_device->props.brightness);
 					dsi_display->panel->dim_layer_replace_dc = false;
 					dsi_display->panel->dc_enable = true;
 					pr_info("fod restore DC\n");
@@ -770,13 +779,18 @@ int sde_connector_update_hbm(struct sde_connector *c_conn)
 			mutex_lock(&dsi_display->panel->panel_lock);
 			sde_encoder_wait_for_event(c_conn->encoder, MSM_ENC_VBLANK);
 			pr_info("wait one frame for hbm on\n");
-			if (dsi_display->panel->last_bl_lvl || dsi_display->drm_dev->state == DRM_BLANK_LP1 || dsi_display->drm_dev->state == DRM_BLANK_LP2) {
+			if (dsi_display->panel->last_bl_lvl ||
+				dsi_display->drm_dev->state == DRM_BLANK_LP1 ||
+				dsi_display->drm_dev->state == DRM_BLANK_LP2) {
 				SDE_ATRACE_BEGIN("set_hbm_on");
 				dsi_display->panel->fod_dimlayer_hbm_enabled = true;
                                 dsi_display->panel->skip_dimmingon = STATE_DIM_BLOCK;
-				rc = dsi_display_write_panel(dsi_display, &dsi_display->panel->cur_mode->priv_info->cmd_sets[DSI_CMD_SET_DISP_HBM_FOD_ON]);
+				rc = dsi_display_write_panel(dsi_display,
+						&dsi_display->panel->cur_mode->priv_info->cmd_sets[
+								DSI_CMD_SET_DISP_HBM_FOD_ON]);
 				pr_info("HBM fod on\n");
-                                sysfs_notify(&dsi_display->drm_conn->kdev->kobj, NULL, "dimlayer_hbm_enabled");
+                                sysfs_notify(&dsi_display->drm_conn->kdev->kobj, NULL,
+						"dimlayer_hbm_enabled");
 				pr_info("notify hbm on to displayfeature\n");
                         	SDE_ATRACE_END("set_hbm_on");
 			}
@@ -790,7 +804,9 @@ int sde_connector_update_hbm(struct sde_connector *c_conn)
 				dsi_display->panel->dim_layer_replace_dc = true;
 				dsi_display->panel->dc_enable = false;
 				pr_info("fod set CRC OFF\n");
-				dsi_display_write_panel(dsi_display, &dsi_display->panel->cur_mode->priv_info->cmd_sets[DSI_CMD_SET_DISP_CRC_OFF]);
+				dsi_display_write_panel(dsi_display,
+						&dsi_display->panel->cur_mode->priv_info->cmd_sets[
+									DSI_CMD_SET_DISP_CRC_OFF]);
 				SDE_ATRACE_END("set_crc_off");
 			}
 			mutex_unlock(&dsi_display->panel->panel_lock);
@@ -1841,6 +1857,7 @@ static ssize_t _sde_debugfs_conn_cmd_tx_write(struct file *file,
 
 	if (count == 0)
 		return rc;
+
 	if (count > MAX_CMD_PAYLOAD_SIZE * 3) {
 		SDE_ERROR("expected <%d bytes into command packet\n", MAX_CMD_PAYLOAD_SIZE * 3);
 		return -E2BIG;
@@ -2375,7 +2392,6 @@ static irqreturn_t esd_err_irq_handle(int irq, void *data)
 		pr_info("%s: esd recovery underway\n", __func__);
 		return IRQ_HANDLED;
 	}
-
 	atomic_set(&dsi_display->panel->esd_recovery_pending, 1);
 
 	SDE_ERROR("esd check irq report PANEL_DEAD conn_id: %d enc_id: %d\n",
@@ -2544,14 +2560,16 @@ struct drm_connector *sde_connector_init(struct drm_device *dev,
 			dsi_display->panel->esd_config.esd_err_irq > 0 &&
 			dsi_display->panel->esd_config.esd_interrupt_flags >= 0) {
 			rc = request_threaded_irq(dsi_display->panel->esd_config.esd_err_irq,
-							NULL, esd_err_irq_handle,
-							dsi_display->panel->esd_config.esd_interrupt_flags,
-							"esd_err_irq", c_conn);
+						NULL, esd_err_irq_handle,
+						dsi_display->panel->esd_config.esd_interrupt_flags,
+						"esd_err_irq", c_conn);
 			if (rc < 0) {
-				pr_err("%s: request irq %d failed\n", __func__, dsi_display->panel->esd_config.esd_err_irq);
+				pr_err("%s: request irq %d failed\n", __func__,
+					dsi_display->panel->esd_config.esd_err_irq);
 				dsi_display->panel->esd_config.esd_err_irq = 0;
 			} else {
-				pr_info("%s: Request esd irq %d succeed!\n", __func__, dsi_display->panel->esd_config.esd_err_irq);
+				pr_info("%s: Request esd irq %d succeed!\n", __func__,
+					dsi_display->panel->esd_config.esd_err_irq);
 			}
 		}
 	}

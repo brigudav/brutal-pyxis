@@ -364,7 +364,7 @@ int dsi_panel_set_doze_backlight(struct dsi_display *display);
 ssize_t dsi_panel_get_doze_backlight(struct dsi_display *display, char *buf);
 
 int dsi_bridge_disp_set_doze_backlight(struct drm_connector *connector,
-			int doze_backlight)
+				int doze_backlight)
 {
 	struct dsi_display *display = NULL;
 	struct dsi_bridge *c_bridge = NULL;
@@ -386,7 +386,7 @@ int dsi_bridge_disp_set_doze_backlight(struct drm_connector *connector,
 }
 
 ssize_t dsi_bridge_disp_get_doze_backlight(struct drm_connector *connector,
-			char *buf)
+				char *buf)
 {
 	struct dsi_display *display = NULL;
 	struct dsi_bridge *c_bridge = NULL;
@@ -469,7 +469,6 @@ static void dsi_bridge_post_disable(struct drm_bridge *bridge)
 	}
 
 	event = dev->state;
-
 	g_notify_data.data = &event;
 
 	if (!bridge) {
